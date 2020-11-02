@@ -1,0 +1,29 @@
+<app-header></app-header>
+<main>
+  <mat-tab-group [color]="'primary'" [backgroundColor]="'accent'" (selectedIndexChange)="getFreshBills($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mat-icon-rtl-mirror">list</mat-icon>
+        Create Bill
+      </ng-template>
+      <app-bills></app-bills>
+      <br>
+      <app-bill-item-list></app-bill-item-list>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mat-icon-rtl-mirror">book</mat-icon>
+        View All Bills
+      </ng-template>
+      <app-bill-list></app-bill-list>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mat-icon-rtl-mirror">edit</mat-icon>
+        Add Product
+      </ng-template>
+      <app-product></app-product>
+      <app-product-list></app-product-list>
+    </mat-tab>
+  </mat-tab-group>
+</main>

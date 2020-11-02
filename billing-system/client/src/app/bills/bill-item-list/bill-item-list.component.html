@@ -1,0 +1,98 @@
+<mat-accordion multi="True" *ngIf="newItem.length > 0">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+        New Bill
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="newItem" class="mat-elevation-z8">
+      <!-- Item Column -->
+      <ng-container matColumnDef="item_name">
+        <th mat-header-cell *matHeaderCellDef> Item </th>
+        <td mat-cell *matCellDef="let item_name"> {{item_name.item_name}} </td>
+        <td mat-footer-cell *matFooterCellDef> Total </td>
+      </ng-container>
+
+      <!-- Cost Column -->
+      <ng-container matColumnDef="item_price">
+        <th mat-header-cell *matHeaderCellDef> Price </th>
+        <td mat-cell *matCellDef="let item_price"> {{item_price.item_price | currency:"&#8377;" }} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency:"&#8377;"}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="item_quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let item_quantity"> {{item_quantity.item_quantity}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getFinalTotal() | currency:"&#8377;"}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+    </table>
+    <mat-action-row>
+      <form (submit)="onAddBill(postForm)" #postForm="ngForm">
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            name="name"
+            ngModel
+            required
+            placeholder="Name"
+            #title="ngModel">
+          <mat-error *ngIf="title.invalid">Please enter a Name</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="number"
+            matInput
+            rows="4"
+            name="cell_number"
+            ngModel
+            required
+            placeholder="Mobile Number"
+            #content="ngModel">
+          <mat-error *ngIf="content.invalid">Please enter a Mobile Number!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="number"
+            matInput
+            rows="4"
+            name="discount_percent"
+            ngModel
+            required
+            placeholder="% Discount"
+            [value] = "discount"
+            (input) = "calculateDiscount($event.target.value)"
+            #content="ngModel">
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="number"
+            matInput
+            name="final_bill"
+            ngModel
+            required
+            placeholder="After Discount"
+            [value] = "after_discount"
+            [(ngModel)] = "after_discount"
+            #content="ngModel">
+            <mat-error *ngIf="content.invalid">Please enter a final price!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input name="bill_date" matInput [matDatepicker]="picker2" [value]="date.value" [(ngModel)] = "date.value">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error *ngIf="content.invalid">Please enter a Date!</mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit">Finalize</button>
+      </form>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <br>
+  <mat-progress-bar *ngIf="processing" mode="indeterminate"></mat-progress-bar>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="newItem.length <= 0">No Items added Yet!</p>

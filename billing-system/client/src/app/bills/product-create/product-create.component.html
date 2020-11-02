@@ -1,0 +1,70 @@
+<mat-card>
+  <form (submit)="onAddProduct(postform)" #postform="ngForm">
+    <mat-form-field>
+      <input
+        type="text"
+        matInput
+        rows="4"
+        name="product_name"
+        ngModel
+        required
+        placeholder="Product Name"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter Product Name!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="product_id"
+        ngModel
+        required
+        placeholder="Product ID"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter Product ID!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="product_quantity"
+        ngModel
+        required
+        placeholder="Product Quantity"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter Quantity!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="current_bought_price"
+        ngModel
+        required
+        placeholder="Bought Price"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter Bought Price!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="selling_price"
+        ngModel
+        required
+        placeholder="Selling Price"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter Selling Price!</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">Add Product</button>
+  </form>
+  <br>
+  <mat-progress-bar *ngIf="processing" [color]="'Accent'" mode="buffer"></mat-progress-bar>
+</mat-card>

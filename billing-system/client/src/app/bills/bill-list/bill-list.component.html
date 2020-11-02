@@ -1,0 +1,91 @@
+<mat-card>
+  <form (submit)="onFilterBill(postForm)" (reset)="onResetForm(postForm)" #postForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="name"
+        ngModel
+        placeholder="Name"
+        #title="ngModel">
+      <!-- <mat-error *ngIf="title.invalid">Please enter a Name</mat-error> -->
+    </mat-form-field>
+    <mat-label>
+      --or--
+    </mat-label>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="cell_number"
+        ngModel
+        placeholder="Mobile Number"
+        #content="ngModel">
+      <!-- <mat-error *ngIf="content.invalid">Please enter a Mobile Number!</mat-error> -->
+    </mat-form-field>
+    <mat-label>
+      --or--
+    </mat-label>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input name="start_date" ngModel matStartDate placeholder="Start date">
+        <input name="end_date" ngModel matEndDate placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">Filter</button>
+    <button
+      mat-raised-button
+      color="accent"
+      type="reset">Reset</button>
+  </form>
+</mat-card>
+<br>
+<mat-accordion multi="True" *ngIf="allbill.length > 0" (notify)="ontThisTabactive($event)">
+  <mat-expansion-panel *ngFor="let bill of allbill">
+    <mat-expansion-panel-header>
+        {{ bill.name }} - {{bill.cell_number}} - {{bill.bill_date | date:'EEEE, MMMM d, yyyy h:mm a'}}
+    </mat-expansion-panel-header>
+      <table mat-table [dataSource]="bill.bill_items" class="mat-elevation-z8">
+        <!-- Item Column -->
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef> Item </th>
+          <td mat-cell *matCellDef="let item_name"> {{item_name.item_name}} </td>
+          <td mat-footer-cell *matFooterCellDef> Total </td>
+        </ng-container>
+
+        <!-- Cost Column -->
+        <ng-container matColumnDef="item_price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let item_price"> {{item_price.item_price | currency : '&#8377;'}} </td>
+          <td mat-footer-cell *matFooterCellDef> Discount: {{calculateDiscount(bill)}}%</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_quantity">
+          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+          <td mat-cell *matCellDef="let item_quantity"> {{item_quantity.item_quantity}} </td>
+          <td mat-footer-cell *matFooterCellDef>
+            <mat-list>
+              <mat-list-item>{{getActualCost(bill) | currency : '&#8377;' }}</mat-list-item>
+              <mat-list-item>- {{getDiscountGiven(bill) | currency : '&#8377;' }}</mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>{{bill.final_bill | currency : '&#8377;' }}</mat-list-item>
+            </mat-list>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      </table>
+    <mat-action-row>
+      <button (click)="deleteBill(bill._id)" mat-button color="warn">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="allbill.length <= 0">No Bills Yet!</p>

@@ -1,0 +1,9 @@
+table {
+  width: 100%;
+}
+
+mat-form-field,
+textarea {
+  width: 20%;
+  padding: 20px;
+}

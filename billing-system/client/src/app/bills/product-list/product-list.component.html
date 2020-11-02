@@ -1,0 +1,29 @@
+<mat-grid-list cols="3" rowHeight="1:1" padding="0px">
+  <mat-grid-tile *ngFor="let prod of products">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{prod.product_name}}</mat-card-title>
+        <mat-card-subtitle>{{prod.product_id}}</mat-card-subtitle>
+        <mat-card-content>
+          <form (submit)="onUpdateProduct(postform)" #postform="ngForm">
+            <mat-form-field>
+              <mat-label>Product quantity</mat-label>
+              <input type="number" required name="product_quantity" matInput disabled value={{prod.product_quantity}}>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Selling Price</mat-label>
+              <input type="number" required name="selling_price" matInput disabled value={{prod.selling_price}}>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Bought Price</mat-label>
+              <input type="number" required name="current_bought_price" matInput disabled={{disableStatus[prod.product_name]}} value={{prod.current_bought_price}}>
+            </mat-form-field>
+            <button mat-icon-button color="accent"  type="submit">
+              <mat-icon class="mat-icon-rtl-mirror">edit</mat-icon>
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card-header>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

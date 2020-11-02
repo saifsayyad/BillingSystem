@@ -1,0 +1,50 @@
+<mat-card>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="item_name"
+        [(ngModel)] = "current_option"
+        required
+        placeholder="Product Name"
+        (ngModelChange)="doFilter()"
+        [matAutocomplete]="auto"
+        #title="ngModel">
+      <mat-error *ngIf="title.invalid">Please enter a Product Name</mat-error>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions" [value]="option.product_name">
+          {{option.product_name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="item_price"
+        [(ngModel)] = "prod_price"
+        required
+        placeholder="Cost"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter a Cost!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        rows="4"
+        name="item_quantity"
+        ngModel
+        required
+        placeholder="Quantity"
+        #content="ngModel">
+      <mat-error *ngIf="content.invalid">Please enter a Quantity!</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">Add item</button>
+  </form>
+</mat-card>
