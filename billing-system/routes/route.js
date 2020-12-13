@@ -49,7 +49,7 @@ router.put('/product/:id', jsonParser, (req, res, next) => {
         if(err){
             res.json({err:err, msg:"Failed!"});
         }else{
-            res.json(result);
+            res.json({msg: 'Product '+req.params.id+' Updated!', res: result});
         }
     });
 });

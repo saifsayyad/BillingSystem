@@ -31,13 +31,24 @@ export class ProductService{
        selling_price:selling_price, current_bought_price:current_bought_price, bought_history:[boughtHistory], selling_history:[]};
 
     var product_already_added: boolean = false;
+    let counter: number = 0;
+    let foundIndex: number = 0;
     this.product.forEach(element => {
       if (product.product_name === element.product_name){
         product_already_added = true;
+        foundIndex = counter;
       }
+      counter++;
     });
     if (!product_already_added){
       this.product.push(product);
+    } else {
+      this.product[foundIndex].product_quantity += product_quantity;
+      this.product[foundIndex].selling_price = selling_price;
+      this.product[foundIndex].current_bought_price = current_bought_price;
+      this.product[foundIndex].bought_history.push(boughtHistory);
+      this.productUpdated.next([...this.product]);
+      return this.createBillService.updateProduct(this.product[foundIndex]);
     }
     this.productUpdated.next([...this.product]);
     return this.createBillService.addProduct(product);
